@@ -1,0 +1,152 @@
+Q1
+package q1
+
+func MaiorProduto(n []int) int {
+	// Encontrar o menor dígito diferente de 1
+	minNonOne := 10 // Inicializado com um valor maior que qualquer dígito
+
+	for _, digit := range n {
+		if digit > 1 && digit < minNonOne {
+			minNonOne = digit
+		}
+	}
+
+	// Se não há dígitos diferentes de 1, o produto máximo é 1
+	if minNonOne == 10 {
+		return 1
+	}
+
+	// Substituir o menor dígito diferente de 1 por 1
+	for i, digit := range n {
+		if digit == minNonOne {
+			n[i] = 1
+			break
+		}
+	}
+
+	// Calcular o produto máximo
+	produto := 1
+	for _, digit := range n {
+		produto *= digit
+	}
+
+	return produto
+}
+
+Q2
+package q2
+
+func MinimoOperacoes(s string, k int) int {
+	contagemOperacoes := 0
+	contagemPretas := 0
+
+	for _, cor := range s {
+		if cor == 'B' {
+			contagemPretas++
+		} else {
+			// Se encontramos uma célula branca, calculamos as operações necessárias para o grupo de células pretas anteriores
+			if contagemPretas > 0 {
+				// Incrementamos a contagem de operações, arredondando para cima a divisão
+				contagemOperacoes += (contagemPretas + k - 1) / k
+				contagemPretas = 0 // Resetamos a contagem de células pretas para o próximo grupo
+			}
+		}
+	}
+
+	// Se há células pretas no final, calculamos as operações necessárias para esse grupo
+	if contagemPretas > 0 {
+		contagemOperacoes += (contagemPretas + k - 1) / k
+	}
+
+	return contagemOperacoes
+}
+
+Q3
+package q3
+
+import "errors"
+
+func DominoPieces(m, n, i, j int) (int, error) {
+    // Verificar entradas inválidas
+    if m <= 0 || n <= 0 || i <= 0 || j <= 0 {
+        return 0, errors.New("as dimensões devem ser maiores que zero")
+    }
+
+    if i > m || j > n {
+        return 0, errors.New("o tamanho da peça de dominó deve ser menor ou igual ao tamanho do tabuleiro")
+    }
+
+    // Calcular o número máximo de peças em uma linha
+    peçasEmUmaLinha := min(m/i, n/j)
+
+    // Calcular o número total de peças
+    totalPeças := peçasEmUmaLinha * (m / i)
+
+    return totalPeças, nil
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+
+Q4
+package q4
+
+import "errors"
+
+func ConvertTemperature(temp float64, fromScale string, toScale string) (float64, error) {
+    // Verificar escalas válidas
+    validScales := map[string]bool{"C": true, "F": true, "K": true}
+    if !validScales[fromScale] || !validScales[toScale] {
+        return 0, errors.New("escala inválida")
+    }
+
+    // Realizar a conversão de temperatura
+    var result float64
+    switch fromScale {
+    case "C":
+        if toScale == "F" {
+            result = temp*9/5 + 32
+        } else if toScale == "K" {
+            result = temp + 273.15
+        }
+    case "F":
+        if toScale == "C" {
+            result = (temp - 32) * 5/9
+        } else if toScale == "K" {
+            result = (temp - 32) * 5/9 + 273.15
+        }
+    case "K":
+        if toScale == "C" {
+            result = temp - 273.15
+        } else if toScale == "F" {
+            result = (temp - 273.15) * 9/5 + 32
+        }
+    }
+
+    return result, nil
+}
+Q5
+package q5
+
+func TrocaCartas(cartas string) bool {
+	if cartas == "abc" {
+		return true
+	}
+
+	// Verificar as configurações onde uma troca pode resultar em "abc"
+	if cartas == "cba" || cartas == "bca" || cartas == "bac" {
+		return true
+	}
+
+	// Verificar se há duas ou mais letras iguais
+	if (cartas[0] == cartas[1] && cartas[1] == cartas[2]) ||
+		(cartas[0] != cartas[1] && cartas[1] != cartas[2] && cartas[0] != cartas[2]) {
+		return false
+	}
+
+	return true
+}
