@@ -1,0 +1,188 @@
+ - (FT. PROF GPT) -
+Q1 RESOLVIDA [peso=10]
+
+package main
+
+import "fmt"
+
+func divmelancia(peso int) (bool, error) {
+	if peso <= 0 {
+		fmt.Errorf("o peso da melancia deve ser não nulo e positivo")
+	}
+	if peso%2 == 0 && peso > 2 {
+		return true, nil
+	}
+	return false, nil
+}
+func main() {
+	pesomelancia := 10
+	possiveldivisao, err := divmelancia(pesomelancia)
+	if err != nil {
+		fmt.Println("error")
+	} else if possiveldivisao {
+		fmt.Println("é possível dividir a melancia")
+	} else {
+		fmt.Println("não é possível dividir a melancia")
+	}
+
+}
+
+Q2 RESOLVIDA [matriz com 7 linhas]
+
+package main
+
+import "fmt"
+
+//no mínimo 2 trues para contar como problema resolvido
+//
+
+func contarproblemas(opinioes [][]bool) int {
+	certos := 0
+	for i := 0; i < len(opinioes); i++ {
+		amigoscertos := 0
+		for j := 0; j < len(opinioes[i]); j++ {
+			if opinioes[i][j] {
+				amigoscertos++
+			}
+		}
+		if amigoscertos >= 2 {
+			certos++
+		}
+	}
+	return certos
+}
+func main() {
+
+	opinioes := [][]bool{
+		{true, false, true},
+		{true, true, false},
+		{false, true, true},
+		{false, false, false},
+		{false, true, false},
+		{true, false, false},
+		{true, true, true},
+	}
+	problemasresolvidos := contarproblemas(opinioes)
+	fmt.Println("quantidade de problemas que serão resolvidos: ", problemasresolvidos)
+}
+
+Q3 RESOLVIDA [matriz 6x8]
+
+//peças são 2x1, cobrem 2 quadrados, não se sobrepõem
+//total de peças que podem ser colocadas é M*N/2
+//se M x N for ímpar, não é possível cobrir todos os quadrados
+
+package main
+
+import (
+	"errors"
+)
+
+func contarpeças(M, N int) (int, error) {
+
+	if M <= 0 || N <= 0 {
+		return 0, errors.New("M e N devem ser positivos maiores que 0")
+	}
+	totalqds := M * N / 2
+	if totalqds%2 != 0 {
+		return totalqds / 2, nil
+	}
+	return totalqds / 2, nil
+}
+func main() {
+	M := 6
+	N := 8
+	maxpeças, err := contarpeças(M, N)
+	if err != nil {
+		println("erro")
+	} else {
+		println("o número máximo de peças que podem ser encaixadas é: ", maxpeças)
+	}
+
+}
+
+Q4 RESOLVIDA [lista:{12, 11, 10, 9, 8, 7, 6, 5}]
+
+//a lista não pode ser vazia - retornar erro
+//retornos: ordem crescente - 1; decrescente - 2; apenas 1 elemento - 3
+
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func classiflista(preço []int) (int, error) {
+	if len(preço) == 0 {
+		return 0, errors.New("a lista é vazia")
+	}
+	if len(preço) == 1 {
+		return 3, nil
+	}
+	crescente := true
+	for i := 1; i < len(preço); i++ {
+		if preço[i-1] > preço[i] {
+			crescente = false
+			break
+		}
+	}
+	if crescente {
+		return 1, nil
+	}
+	decrescente := true
+	for i := 1; i < len(preço); i++ {
+		if preço[i-1] < preço[i] {
+			decrescente = false
+			break
+		}
+		if decrescente {
+			return 2, nil
+		}
+	}
+	return 3, nil
+}
+func main() {
+	lista := []int{12, 11, 10, 9, 8, 7, 6, 5}
+	ordem, err := classiflista(lista)
+	if err != nil {
+		fmt.Println("Erro:", err)
+	} else {
+		fmt.Println("A lista está em ordem:", ordem)
+	}
+}
+
+Q5 RESOLVIDA [texto: "vai se f Marcos"]
+
+//* deleta todas as vogais;
+//* insere um caractere "." antes de cada consoante;
+//* substitui todas as consoantes maiúsculas pelas correspondentes em minúsculas.
+
+package main
+
+import "fmt"
+
+func processarSequencia(input string) string {
+	resultado := ""
+
+	for _, char := range input {
+		if char == 'A' || char == 'a' || char == 'E' || char == 'e' || char == 'I' || char == 'i' || char == 'O' || char == 'o' || char == 'U' || char == 'u' {
+			continue
+		}
+
+		resultado += "."
+
+		if char >= 'A' && char <= 'Z' {
+			char += 32
+		}
+		resultado += string(char)
+	}
+
+	return resultado
+}
+
+func main() {
+	entrada := "vai se f Marcos"
+	resultado := processarSequencia(entrada)
+	fmt.Println("Resultado:", resultado)
+}
